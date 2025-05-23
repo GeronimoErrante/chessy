@@ -3,21 +3,20 @@ import { X, Eye, EyeOff } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { loginUser } from "../services/authService"
 import Alert from "../components/Alert"
+import Loader from "../components/Loader"
 import { useMessageHandler } from "../utils/messageHandler"
 
 export default function Login() {
   const {
     error,
     errorMessage,
-    success,
-    successMessage,
     clearMessages,
-    showError,
-    showSuccess
+    showError
   } = useMessageHandler();
   
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -34,21 +33,22 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     clearMessages();
+    setIsLoading(true);
     try {
       const data = await loginUser(formData);
-      showSuccess("Inicio de sesión exitoso.");
       localStorage.setItem("accessToken", data.access);
       localStorage.setItem("refreshToken", data.refresh);
-      setTimeout(() => {
-        navigate("/tournaments");
-      }, 2000);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      navigate("/tournaments");
     } catch (err) {
       showError(err.response?.data?.error || "Credenciales incorrectas.");
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
+      {isLoading && <Loader />}
       <div className="bg-[#f0d989] p-8 rounded-lg shadow-lg max-w-md w-full">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-black">INICIAR SESIÓN</h2>
@@ -59,7 +59,6 @@ export default function Login() {
 
         <div className="space-y-4">
           {error && <Alert message={errorMessage} type="error" onClose={clearMessages} />}
-          {success && <Alert message={successMessage} type="success" onClose={clearMessages} />}
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">

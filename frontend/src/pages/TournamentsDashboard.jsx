@@ -6,6 +6,7 @@ import Layout from "../components/Layout";
 import { useNavigate } from "react-router-dom";
 import CreateTournamentModal from "../modals/CreateTournamentModal";
 import Alert from "../components/Alert";
+import Loader from "../components/Loader";
 import { useMessageHandler } from "../utils/messageHandler";
 
 export default function ChessTournaments() {
@@ -26,6 +27,7 @@ export default function ChessTournaments() {
   const [showModal, setShowModal] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedMode, setSelectedMode] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [form, setForm] = useState({
     name: "",
     start_date: "",
@@ -37,6 +39,7 @@ export default function ChessTournaments() {
   });
 
   useEffect(() => {
+    setIsLoading(true);
     getTournamentChoices()
       .then(({ modes, statuses }) => {
         setModes(modes);
@@ -45,10 +48,14 @@ export default function ChessTournaments() {
       .catch((err) => {
         showError("Error al cargar las opciones del torneo");
         console.error("Error fetching choices:", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
   const loadTournaments = (status, mode) => {
+    setIsLoading(true);
     const query = new URLSearchParams();
     if (status) query.append("status", status);
     if (mode) query.append("mode", mode);
@@ -58,6 +65,9 @@ export default function ChessTournaments() {
       .catch((err) => {
         showError("Error al cargar los torneos");
         console.error("Error fetching tournaments:", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -66,6 +76,7 @@ export default function ChessTournaments() {
   }, [selectedStatus, selectedMode]);
 
   const handleCreate = async (formData) => {
+    setIsLoading(true);
     try {
       const token = localStorage.getItem("accessToken");
       await createTournament(formData, token);
@@ -77,6 +88,8 @@ export default function ChessTournaments() {
                           err.response?.data?.detail?.[0] || 
                           "Error al crear el torneo";
       throw new Error(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -100,6 +113,7 @@ export default function ChessTournaments() {
 
   return (
     <Layout>
+      {isLoading && <Loader />}
       <div className="space-y-4 mb-6">
         {error && <Alert message={errorMessage} type="error" onClose={clearMessages} />}
         {success && <Alert message={successMessage} type="success" onClose={clearMessages} />}

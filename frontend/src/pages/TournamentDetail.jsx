@@ -5,6 +5,7 @@ from "../api/tournaments";
 import Layout from "../components/Layout";
 import Countdown from "../components/CountDown";
 import Alert from "../components/Alert";
+import Loader from "../components/Loader";
 import { getCurrentUser } from "../services/authService";
 import { useMessageHandler } from "../utils/messageHandler";
 
@@ -26,6 +27,7 @@ export default function TournamentDetails() {
   const [canStart, setCanStart] = useState(false);
   const [showConfirmLeave, setShowConfirmLeave] = useState(false);
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -33,20 +35,34 @@ export default function TournamentDetails() {
       showError("No hay token de acceso.");
       return;
     }
+    setIsLoading(true);
     getCurrentUser(token)
       .then((data) => setUser(data))
       .catch(() => {
         showError("No se pudo cargar el usuario actual");
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
   useEffect(() => {
+    setIsLoading(true);
     getTournamentById(id)
       .then((data) => setTournament(data))
-      .catch((err) => console.error("Error:", err));
+      .catch((err) => console.error("Error:", err))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [joinUser]);
 
-  if (!tournament || !user) return <div className="text-white p-4">Cargando...</div>;
+  if (isLoading || !tournament || !user) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
 
   const isPlayer = tournament.players.some((p) => p.id === user.id);
   const isCreator = user.username === tournament.creator;
@@ -56,6 +72,7 @@ export default function TournamentDetails() {
   };
 
   const handleStartTournament = async () => {
+    setIsLoading(true);
     try {
       const token = localStorage.getItem("accessToken");
       const response = await startTournament(tournament.id, token);
@@ -65,10 +82,13 @@ export default function TournamentDetails() {
       }, 2000);
     } catch (err) {
       showError(err.response?.data?.detail || "Error al comenzar el torneo.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleJoin = async () => {
+    setIsLoading(true);
     try {
       const token = localStorage.getItem("accessToken");
       const response = await joinTournament(tournament.id, token);
@@ -77,20 +97,24 @@ export default function TournamentDetails() {
     } catch (err) {
       setJoinUser(false);
       showError(err.response?.data?.detail || "Error al unirse.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleLeave = async () => {
+    setIsLoading(true);
     try {
       const token = localStorage.getItem("accessToken");
       const response = await leaveTournament(tournament.id, token);
       setJoinUser(false);
       showSuccess(response.detail);
-      setTimeout(() => {
-        navigate("/tournaments");
-      }, 2000);
+      const updatedTournament = await getTournamentById(id);
+      setTournament(updatedTournament);
     } catch (err) {
       showError(err.response?.data?.detail || "Error al salir.");
+    } finally {
+      setIsLoading(false);
     }
   };
 

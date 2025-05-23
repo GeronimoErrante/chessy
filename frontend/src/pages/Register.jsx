@@ -3,6 +3,7 @@ import { X, Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom"; 
 import { registerUser } from "../services/authService"; 
 import Alert from "../components/Alert";
+import Loader from "../components/Loader";
 import { useMessageHandler } from "../utils/messageHandler";
 
 export default function Register() {
@@ -10,16 +11,14 @@ export default function Register() {
   const {
     error,
     errorMessage,
-    success,
-    successMessage,
     clearMessages,
-    showError,
-    showSuccess
+    showError
   } = useMessageHandler();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -46,14 +45,14 @@ export default function Register() {
       return;
     }
 
+    setIsLoading(true);
     try {
       await registerUser(formData);
-      showSuccess("Registro exitoso.");
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      navigate("/login");
     } catch (err) {
       showError(err.message);
+      setIsLoading(false);
     }
   };
 
@@ -63,6 +62,7 @@ export default function Register() {
 
   return (
     <div className="min-h-screen w-full bg-black flex items-center justify-center p-4">
+      {isLoading && <Loader />}
       <div className="w-full max-w-md bg-[#f0d989] p-6 relative">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center">
@@ -81,7 +81,6 @@ export default function Register() {
 
         <div className="space-y-4">
           {error && <Alert message={errorMessage} type="error" onClose={clearMessages} />}
-          {success && <Alert message={successMessage} type="success" onClose={clearMessages} />}
         </div>
 
         <form onSubmit={handleSubmit}>
