@@ -5,12 +5,20 @@ const CreateTournamentModal = ({ isOpen, onClose, form, setForm, onCreate, modes
 
   const handleChange = (e) => {
     const { name, value } = e.target
+    if (name === "players_amount") {
+    const num = parseInt(value, 10)
+    if (isNaN(num) || num < 2 || num > 100 || num % 2 !== 0) return
+      setForm(prev => ({ ...prev, [name]: num })) 
+    return
+  }
     setForm(prev => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = () => {
+    console.log(form)
     onCreate(form)
   }
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-[#f5e5b5] p-6 rounded-none shadow-lg w-full max-w-md">
@@ -26,6 +34,7 @@ const CreateTournamentModal = ({ isOpen, onClose, form, setForm, onCreate, modes
             onChange={handleChange}
             className="w-full p-3 bg-[#222] text-white border-none rounded-none placeholder-white uppercase"
           />
+
           <select
             name="mode"
             value={form.mode}
@@ -39,6 +48,27 @@ const CreateTournamentModal = ({ isOpen, onClose, form, setForm, onCreate, modes
               </option>
             ))}
           </select>
+
+          <textarea
+            name="description"
+            placeholder="DESCRIPCIÓN"
+            value={form.description}
+            onChange={handleChange}
+            className="w-full p-3 bg-[#222] text-white border-none rounded-none placeholder-white uppercase resize-none"
+            rows={3}
+          />
+
+          <input
+            type="number"
+            name="players_amount"
+            placeholder="CANTIDAD DE JUGADORES"
+            value={form.players_amount}
+            onChange={handleChange}
+            className="w-full p-3 bg-[#222] text-white border-none rounded-none placeholder-white uppercase text-center"
+            min={2}
+            max={100}
+            step={2}
+          />
 
           <div className="grid grid-cols-2 gap-0">
             <div className="bg-black p-3 flex items-center justify-center uppercase font-medium text-white">
