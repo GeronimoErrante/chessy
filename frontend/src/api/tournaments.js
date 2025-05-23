@@ -32,6 +32,7 @@ export async function getTournamentsByFilters({ status, mode }) {
 }
 
 export async function createTournament(data, token) {
+  console.log("Creating tournament with data:", data);
   const response = await axios.post(
     `${BASE_URL}/tournaments/`,
     data,
@@ -48,6 +49,34 @@ export async function createTournament(data, token) {
 export async function joinTournament(tournamentId, token) {
   const response = await axios.post(
     `${BASE_URL}/tournaments/${tournamentId}/join/`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.data;
+}
+
+export async function leaveTournament(tournamentId, token) {
+  const response = await axios.post(
+    `${BASE_URL}/tournaments/${tournamentId}/leave/`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.data;
+}
+
+export async function startTournament(tournamentId, token) {
+  const response = await axios.post(
+    `${BASE_URL}/tournaments/${tournamentId}/start/`,
     {},
     {
       headers: {

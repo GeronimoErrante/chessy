@@ -20,3 +20,16 @@ export const loginUser = async (credentials) => {
     throw error.response?.data || { error: "Error de red o servidor." };
   }
 };
+
+export const getCurrentUser = async (token) => {
+  try {
+    const response = await axios.get(`${BASE_URL}user/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || { error: "Error de red o servidor." };
+  }
+}
