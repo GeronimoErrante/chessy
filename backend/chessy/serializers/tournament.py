@@ -21,7 +21,7 @@ class TournamentCreateSerializer(serializers.ModelSerializer):
             now = timezone.localtime(timezone.now())  
 
             if aware_start_datetime < now:
-                raise serializers.ValidationError("You cannot create a tournament in the past.")
+                raise serializers.ValidationError("Porfavor elija una fecha y hora válida")
         return attrs
 
 class TournamentSerializer(serializers.ModelSerializer):
@@ -61,11 +61,11 @@ class TournamentDetailSerializer(serializers.ModelSerializer):
 
         # Regla 1: un torneo finalizado no puede cambiar de estado
         if current_status == 'FINISHED':
-            raise serializers.ValidationError("The tournament has already finished.")
+            raise serializers.ValidationError("El torneo ya ha finalizado.")
 
         # Regla 2: no puede volver a pending si ya comenzó o está en progreso
         if value == 'PENDING' and (current_status == 'IN_PROGRESS' or has_started):
-            raise serializers.ValidationError("The tournament has already started")
+            raise serializers.ValidationError("El torneo ya ha comenzado.")
 
         # Regla 3: no se puede pasar a IN_PROGRESS si aún no llegó la hora
         if value == 'IN_PROGRESS' and not has_started:
@@ -76,8 +76,8 @@ class TournamentDetailSerializer(serializers.ModelSerializer):
         # Regla 4: para finalizar el torneo, debe haber comenzado y no tener games sin finalizar
         if value == 'FINISHED':
             if not has_started:
-                raise serializers.ValidationError("The tournament has not even started yet.")
+                raise serializers.ValidationError("El torneo aún no ha comenzado.")
             if instance.games.exclude(status='FINISHED').exists():
-                raise serializers.ValidationError("All games must be finished before ending the tournament.")
+                raise serializers.ValidationError("Todos los partidos deben finalizar antes de finalizar el torneo.")
 
         return value

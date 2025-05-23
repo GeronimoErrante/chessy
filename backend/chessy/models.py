@@ -39,7 +39,7 @@ class Tournament(models.Model):
     mode = models.CharField(max_length=10, choices=MODE_CHOICES)
     status = models.CharField(max_length=11, choices=STATUS_CHOICES, default='PENDING')
     players_amount = models.IntegerField(default=0)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

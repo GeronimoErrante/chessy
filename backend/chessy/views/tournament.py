@@ -57,7 +57,7 @@ class TournamentViewSet(viewsets.ModelViewSet):
         players_data = UserSerializer(tournament.players.all(), many=True).data #devuelvo la lista de inscriptos hasta el momento
 
         return Response({
-            'detail': 'Registro exitoso.',
+            'detail': 'Te has inscrito al torneo',
             'players': players_data
         }, status=status.HTTP_200_OK)
 
@@ -75,7 +75,7 @@ class TournamentViewSet(viewsets.ModelViewSet):
         tournament.players.remove(user)
 
         return Response({
-            'detail': 'Desregistro exitoso.',
+            'detail': 'Has abandonado el torneo.',
         }, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['get'])
