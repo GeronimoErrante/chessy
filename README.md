@@ -25,12 +25,16 @@ Repositorio oficial: [https://github.com/GeronimoErrante/chessy](https://github.
 ```bash
 git clone https://github.com/GeronimoErrante/chessy.git
 cd chessy
-docker compose build
-docker compose run --rm frontend npm i
-docker compose up
 
 ```
-
+### 2. Contruir la imagen de los servicios e instalar dependencias
+docker compose build
+docker compose run --rm frontend npm i
+```
+```
+### 3. Levantar la aplicación completa
+docker compose up
+```
 ---
 
 ## 🔐 Archivos `.env` necesarios
