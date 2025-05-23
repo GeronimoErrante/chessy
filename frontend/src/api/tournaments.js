@@ -44,3 +44,17 @@ export async function createTournament(data, token) {
   );
   return response.data;
 }
+
+export async function joinTournament(tournamentId, token) {
+  const response = await axios.post(
+    `${BASE_URL}/tournaments/${tournamentId}/join/`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.data;
+}

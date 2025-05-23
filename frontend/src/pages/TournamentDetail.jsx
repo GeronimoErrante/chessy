@@ -1,29 +1,41 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getTournamentById } from "../api/tournaments";
+import { getTournamentById, joinTournament } from "../api/tournaments";
 import Layout from "../components/Layout";
-import { formatTime, startCountdown } from "../utils/formatDate";
+import Countdown from "../components/CountDown";
 
 export default function TournamentDetails() {
   const { id } = useParams();
   const [tournament, setTournament] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(null);
+  const [joinUser, setJoinUser] = useState(false);
 
   useEffect(() => {
     let interval;
     getTournamentById(id)
       .then((data) => {
         setTournament(data);
-        interval = startCountdown(data.start_date, data.start_time, setTimeLeft);
+
       })
       .catch((err) => console.error("Error:", err));
 
     return () => clearInterval(interval);
-  }, [id]);
+  }, [joinUser]);
 
   if (!tournament) {
     return <div className="text-white p-4">Cargando torneo...</div>;
   }
+
+  const handleJoin = async () => {
+      try {
+      const token = localStorage.getItem("accessToken");
+      await joinTournament(tournament.id, token);
+      setJoinUser(true);
+    } catch (err) {
+      setJoinUser(false);
+      console.error("Error al ingresar al torneo:", err);
+      alert("Error al ingresar el torneo.");
+    }
+  };
 
   return (
     <Layout>
@@ -31,13 +43,14 @@ export default function TournamentDetails() {
         <h1 className="text-2xl font-bold text-center">{tournament.name}</h1>
 
         <p className="text-lg text-center mt-1">🏆 Premio: {tournament.prize} pts</p>
-
-        <p className="text-lg mt-2 text-center">
-          {timeLeft > 0 ? `COMIENZA EN ${formatTime(timeLeft)}` : "¡El torneo está en juego!"}
-        </p>
-
+        <Countdown startDate={tournament.start_date} startTime={tournament.start_time} />
+        <div>
+          <button className="bg-yellow-200 text-black font-bold py-2 px-4 rounded mt-4"
+            onClick={() => handleJoin()}>
+            Unirme al torneo
+          </button>
+        </div>
         <div className="grid grid-cols-2 gap-6 flex-grow mb-4 mt-6">
-          {/* Participantes */}
           <div>
             <div className="grid grid-cols-3 gap-2 font-bold border-b pb-2 border-yellow-200">
               <span>PARTICIPANTES</span>
@@ -47,7 +60,8 @@ export default function TournamentDetails() {
               <div key={index} className="grid grid-cols-3 gap-2 py-2">
                 <span>
                   {player.username}{" "}
-                  {player.id === tournament.creator.id && <span title="Creador">👑</span>}
+                  {player.username === tournament.creator && <span title="Creador">👑</span>}
+                  {console.log(player, tournament)}
                 </span>
                 <span>{player.points ?? "0"}</span>
               </div>
@@ -59,7 +73,7 @@ export default function TournamentDetails() {
             ))}
           </div>
 
-          {/* Encuentros */}
+          {/* Encuentros -> cambiar para que tome los games de cada torneo*/} 
           <div>
             <div className="grid grid-cols-3 font-bold border-b pb-2 border-yellow-200">
               <span>ENCUENTROS EN PROGRESO</span>
