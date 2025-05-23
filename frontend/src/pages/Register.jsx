@@ -1,16 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { X, Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom"; 
 import { registerUser } from "../services/authService"; 
 import Alert from "../components/Alert";
+import { useMessageHandler } from "../utils/messageHandler";
 
 export default function Register() {
   const navigate = useNavigate();
+  const {
+    error,
+    errorMessage,
+    success,
+    successMessage,
+    clearMessages,
+    showError,
+    showSuccess
+  } = useMessageHandler();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -33,35 +42,24 @@ export default function Register() {
     e.preventDefault();
 
     if (!acceptTerms) {
-      setError(true);
-      setErrorMessage("Debés aceptar los términos y condiciones.");
+      showError("Debés aceptar los términos y condiciones.");
       return;
     }
 
     try {
       await registerUser(formData);
-      navigate("/login");
+      showSuccess("Registro exitoso.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     } catch (err) {
-      console.error("Error en el registro:", err);
-        console.error(err.response.data.detail[0]);
-      setError(true);
-      setErrorMessage(err.response.data.detail[0] || "Error al registrar.");
+      showError(err.message);
     }
   };
 
   const handleClose = () => {
     navigate("/");
   };
-
-  useEffect(() => {
-    if (error) {
-      const timer = setTimeout(() => {
-        setError(false);
-        setErrorMessage("");
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [error]);
 
   return (
     <div className="min-h-screen w-full bg-black flex items-center justify-center p-4">
@@ -79,6 +77,11 @@ export default function Register() {
             <X className="w-6 h-6 text-black" />
             X
           </button> 
+        </div>
+
+        <div className="space-y-4">
+          {error && <Alert message={errorMessage} type="error" onClose={clearMessages} />}
+          {success && <Alert message={successMessage} type="success" onClose={clearMessages} />}
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -115,8 +118,6 @@ export default function Register() {
               </button>
             </div>
 
-            {error && <p className="text-red-700 text-center font-semibold">{errorMessage}</p>}
-
             <div className="grid grid-cols-2 gap-4 mt-6">
               <button
                 type="submit"
@@ -133,7 +134,6 @@ export default function Register() {
             </div>
           </div>
         </form>
-        {error && <Alert message={errorMessage} />}
 
         <div className="mt-6 text-center text-black">
           <p className="mb-2">

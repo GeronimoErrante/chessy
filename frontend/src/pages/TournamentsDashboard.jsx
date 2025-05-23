@@ -6,9 +6,20 @@ import Layout from "../components/Layout";
 import { useNavigate } from "react-router-dom";
 import CreateTournamentModal from "../modals/CreateTournamentModal";
 import Alert from "../components/Alert";
+import { useMessageHandler } from "../utils/messageHandler";
 
 export default function ChessTournaments() {
   const navigate = useNavigate();
+  const {
+    error,
+    errorMessage,
+    success,
+    successMessage,
+    clearMessages,
+    showError,
+    showSuccess
+  } = useMessageHandler();
+
   const [tournaments, setTournaments] = useState([]);
   const [statuses, setStatuses] = useState([]);
   const [modes, setModes] = useState([]);
@@ -31,7 +42,10 @@ export default function ChessTournaments() {
         setModes(modes);
         setStatuses(statuses);
       })
-      .catch((err) => console.error("Error fetching choices:", err));
+      .catch((err) => {
+        showError("Error al cargar las opciones del torneo");
+        console.error("Error fetching choices:", err);
+      });
   }, []);
 
   const loadTournaments = (status, mode) => {
@@ -41,7 +55,10 @@ export default function ChessTournaments() {
 
     getTournaments(query.toString())
       .then((data) => setTournaments(data))
-      .catch((err) => console.error("Error fetching tournaments:", err));
+      .catch((err) => {
+        showError("Error al cargar los torneos");
+        console.error("Error fetching tournaments:", err);
+      });
   };
 
   useEffect(() => {
@@ -50,23 +67,48 @@ export default function ChessTournaments() {
 
   const handleCreate = async (formData) => {
     try {
-    console.log("Form data:", formData);
+      const token = localStorage.getItem("accessToken");
+      await createTournament(formData, token);
+      showSuccess("Torneo creado exitosamente");
+      setShowModal(false);
+      loadTournaments(selectedStatus, selectedMode);
+    } catch (err) {
+      const errorMessage = err.response?.data?.non_field_errors?.[0] || 
+                          err.response?.data?.detail?.[0] || 
+                          "Error al crear el torneo";
+      throw new Error(errorMessage);
+    }
+  };
+
+  const handleCreateClick = () => {
     const token = localStorage.getItem("accessToken");
-    await createTournament(formData, token);
-    setShowModal(false);
-    loadTournaments(selectedStatus, selectedMode);
-  } catch (err) {
-    <Alert message={err.message} /> 
-    console.error("Error creando torneo:", err);
-  }
-};
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+    setShowModal(true);
+  };
+
+  const handleTournamentClick = (tournamentId) => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+    navigate(`/tournaments/${tournamentId}`);
+  };
 
   return (
     <Layout>
+      <div className="space-y-4">
+        {error && <Alert message={errorMessage} type="error" onClose={clearMessages} />}
+        {success && <Alert message={successMessage} type="success" onClose={clearMessages} />}
+      </div>
+      
       <div className="flex justify-center mb-4 sm:mb-6 px-2 sm:px-0">
         <button
           className="bg-yellow-200 text-black font-semibold py-2 px-4 sm:px-6 text-sm sm:text-base rounded w-full sm:w-auto"
-          onClick={() => setShowModal(true)}>
+          onClick={handleCreateClick}>
           Crear Torneo
         </button>
       </div>
@@ -129,7 +171,7 @@ export default function ChessTournaments() {
               >
                 <td
                   className="py-3 sm:py-4 px-2 sm:px-4 cursor-pointer hover:underline text-sm sm:text-base"
-                  onClick={() => navigate(`/tournaments/${tournament.id}`)}
+                  onClick={() => handleTournamentClick(tournament.id)}
                 >
                   {tournament.name} ({mapTournamentStatus(tournament.status)})
                 </td>

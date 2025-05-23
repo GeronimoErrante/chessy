@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {getTournamentById,joinTournament,leaveTournament, startTournament} 
 from "../api/tournaments";
@@ -6,29 +6,37 @@ import Layout from "../components/Layout";
 import Countdown from "../components/CountDown";
 import Alert from "../components/Alert";
 import { getCurrentUser } from "../services/authService";
+import { useMessageHandler } from "../utils/messageHandler";
 
 export default function TournamentDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const {
+    error,
+    errorMessage,
+    success,
+    successMessage,
+    clearMessages,
+    showError,
+    showSuccess
+  } = useMessageHandler();
+
   const [tournament, setTournament] = useState(null);
   const [joinUser, setJoinUser] = useState(false);
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [canStart, setCanStart] = useState(false);
-
+  const [showConfirmLeave, setShowConfirmLeave] = useState(false);
   const [user, setUser] = useState(null);
 
-   useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
-      setError(true);
-      setErrorMessage("No hay token de acceso.");
+      showError("No hay token de acceso.");
       return;
     }
     getCurrentUser(token)
       .then((data) => setUser(data))
       .catch(() => {
-        setError(true);
-        setErrorMessage("No se pudo cargar el usuario actual");
+        showError("No se pudo cargar el usuario actual");
       });
   }, []);
 
@@ -50,40 +58,48 @@ export default function TournamentDetails() {
   const handleStartTournament = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      await startTournament(tournament.id, token);
-      navigator("/tournaments");
+      const response = await startTournament(tournament.id, token);
+      showSuccess(response.detail);
+      setTimeout(() => {
+        navigate("/tournaments");
+      }, 2000);
     } catch (err) {
-      setError(true);
-      setErrorMessage(err.response?.data?.detail || "Error al comenzar el torneo.");
+      showError(err.response?.data?.detail || "Error al comenzar el torneo.");
     }
   };
 
   const handleJoin = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      await joinTournament(tournament.id, token);
+      const response = await joinTournament(tournament.id, token);
       setJoinUser(true);
+      showSuccess(response.detail);
     } catch (err) {
       setJoinUser(false);
-      setError(true);
-      setErrorMessage(err.response?.data?.detail || "Error al unirse.");
+      showError(err.response?.data?.detail || "Error al unirse.");
     }
   };
 
   const handleLeave = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      await leaveTournament(tournament.id, token);
+      const response = await leaveTournament(tournament.id, token);
       setJoinUser(false);
+      showSuccess(response.detail);
+      setTimeout(() => {
+        navigate("/tournaments");
+      }, 2000);
     } catch (err) {
-      setError(true);
-      setErrorMessage(err.response?.data?.detail || "Error al salir.");
+      showError(err.response?.data?.detail || "Error al salir.");
     }
   };
 
   return (
     <Layout>
-      {error && <Alert message={errorMessage} />}
+      <div className="space-y-4">
+        {error && <Alert message={errorMessage} type="error" onClose={clearMessages} />}
+        {success && <Alert message={successMessage} type="success" onClose={clearMessages} />}
+      </div>
       <main className="flex flex-col min-h-screen w-full bg-black text-yellow-200 px-8 py-4">
         <h1 className="text-2xl font-bold text-center">{tournament.name}</h1>
         <p className="text-lg text-center mt-1">🏆 Premio: {tournament.prize} pts</p>
@@ -111,12 +127,38 @@ export default function TournamentDetails() {
             className={`font-bold py-2 px-4 rounded mt-4 ${
               isPlayer ? "bg-red-200 text-black" : "bg-yellow-200 text-black"
             }`}
-            onClick={isPlayer ? handleLeave : handleJoin}
+            onClick={isPlayer ? () => setShowConfirmLeave(true) : handleJoin}
           >
             {isPlayer ? "Salir del torneo" : "Unirme al torneo"}
           </button>
           <p className="mt-4">{tournament.players.length} / {tournament.players_amount}</p>
         </div>
+
+        {showConfirmLeave && (
+          <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+            <div className="bg-black p-6 rounded-lg max-w-md mx-4 border border-gold">
+              <h3 className="text-lg font-bold mb-4 text-gold">Confirmar salida</h3>
+              <p className="text-white mb-6">¿Estás seguro que quieres abandonar el torneo?</p>
+              <div className="flex justify-end space-x-4">
+                <button
+                  onClick={() => setShowConfirmLeave(false)}
+                  className="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 border border-gray-600"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={() => {
+                    setShowConfirmLeave(false);
+                    handleLeave();
+                  }}
+                  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 border border-red-400"
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-2 gap-6 flex-grow mb-4 mt-6">
           <div>

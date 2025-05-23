@@ -2,9 +2,20 @@ import { useState } from "react"
 import { X, Eye, EyeOff } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { loginUser } from "../services/authService"
+import Alert from "../components/Alert"
+import { useMessageHandler } from "../utils/messageHandler"
 
 export default function Login() {
-  const [error, setError] = useState(null);
+  const {
+    error,
+    errorMessage,
+    success,
+    successMessage,
+    clearMessages,
+    showError,
+    showSuccess
+  } = useMessageHandler();
+  
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
@@ -20,33 +31,38 @@ export default function Login() {
     }))
   }
 
-   const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
+    clearMessages();
     try {
       const data = await loginUser(formData);
+      showSuccess("Inicio de sesión exitoso.");
       localStorage.setItem("accessToken", data.access);
       localStorage.setItem("refreshToken", data.refresh);
-      navigate("/tournaments");
+      setTimeout(() => {
+        navigate("/tournaments");
+      }, 2000);
     } catch (err) {
-      setError(err.detail || "Credenciales incorrectas.");
+      showError(err.response?.data?.error || "Credenciales incorrectas.");
     }
   };
 
-   return (
-    <div className="min-h-screen w-full bg-black flex items-center justify-center p-4">
-      <div className="w-full max-w-lg bg-[#f0d989] p-8 relative rounded-md shadow-md">
-        <div className="flex justify-between items-center mb-10 relative">
-          <button
-            onClick={() => navigate(-1)}
-            className="absolute top-0 right-0 bg-red-600 rounded-full p-1 hover:bg-red-700"
-            aria-label="Cerrar"
-          >
-            <X className="w-6 h-6 text-white" />
+  return (
+    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+      <div className="bg-[#f0d989] p-8 rounded-lg shadow-lg max-w-md w-full">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-black">INICIAR SESIÓN</h2>
+          <button onClick={() => navigate("/")} className="text-gray-500 hover:text-gray-700">
+            <X className="w-6 h-6" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-4">
+          {error && <Alert message={errorMessage} type="error" onClose={clearMessages} />}
+          {success && <Alert message={successMessage} type="success" onClose={clearMessages} />}
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-center font-bold mb-2 text-black">EMAIL</label>
             <input
@@ -79,10 +95,6 @@ export default function Login() {
               </span>
             </div>
           </div>
-
-          {error && (
-            <div className="text-center text-red-700 font-bold">{error}</div>
-          )}
 
           <div className="flex justify-center mt-8">
             <button

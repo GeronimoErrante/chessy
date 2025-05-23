@@ -1,22 +1,71 @@
 import React from "react"
+import Alert from "../components/Alert"
+import { useMessageHandler } from "../utils/messageHandler"
 
 const CreateTournamentModal = ({ isOpen, onClose, form, setForm, onCreate, modes }) => {
+  const {
+    error,
+    errorMessage,
+    clearMessages,
+    showError
+  } = useMessageHandler();
+
   if (!isOpen) return null
+
+  const validateForm = () => {
+    if (!form.name.trim()) {
+      showError("El nombre del torneo es requerido");
+      return false;
+    }
+    if (!form.mode) {
+      showError("Debes seleccionar un modo de juego");
+      return false;
+    }
+    if (!form.start_date) {
+      showError("La fecha de inicio es requerida");
+      return false;
+    }
+    if (!form.start_time) {
+      showError("La hora de inicio es requerida");
+      return false;
+    }
+    if (!form.prize || form.prize < 0) {
+      showError("El premio no puede ser negativo");
+      return false;
+    }
+    if (!form.players_amount || form.players_amount < 2 || form.players_amount % 2 !== 0) {
+      showError("La cantidad de jugadores debe ser un número par mayor o igual a 2");
+      return false;
+    }
+    return true;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target
     if (name === "players_amount") {
-    const num = parseInt(value, 10)
-    if (isNaN(num) || num < 2 || num > 100 || num % 2 !== 0) return
+      const num = parseInt(value, 10)
+      if (isNaN(num) || num < 2 || num > 100 || num % 2 !== 0) return
       setForm(prev => ({ ...prev, [name]: num })) 
-    return
-  }
+      return
+    }
+    if (name === "prize") {
+      const num = parseFloat(value)
+      if (isNaN(num) || num < 0) return
+      setForm(prev => ({ ...prev, [name]: num }))
+      return
+    }
     setForm(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = () => {
-    console.log(form)
-    onCreate(form)
+  const handleSubmit = async () => {
+    clearMessages();
+    if (validateForm()) {
+      try {
+        await onCreate(form);
+      } catch (err) {
+        showError(err.message);
+      }
+    }
   }
 
   return (
@@ -26,6 +75,8 @@ const CreateTournamentModal = ({ isOpen, onClose, form, setForm, onCreate, modes
           Crear Torneo
         </h2>
         <div className="space-y-4">
+          {error && <Alert message={errorMessage} type="error" onClose={clearMessages} />}
+          
           <input
             type="text"
             name="name"
@@ -114,7 +165,7 @@ const CreateTournamentModal = ({ isOpen, onClose, form, setForm, onCreate, modes
         <div className="mt-6 flex justify-end gap-4">
           <button
             onClick={onClose}
-            className="bg-transparent px-6 py-2 uppercase font-medium"
+            className="bg-[#e74c3c] text-white px-8 py-2 uppercase font-medium hover:bg-[#c0392b]"
             type="button"
           >
             Cancel
