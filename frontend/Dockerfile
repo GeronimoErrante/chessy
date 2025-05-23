@@ -1,6 +1,6 @@
 FROM node:20-slim
 
-WORKDIR /app
+WORKDIR /app_frontend
 
 # Install dependencies
 COPY package*.json ./
