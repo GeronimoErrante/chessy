@@ -43,21 +43,21 @@ class TournamentViewSet(viewsets.ModelViewSet):
         tournament = self.get_object()
 
         if tournament.status != 'PENDING':
-            return Response({'detail': 'You cannot join a tournament that has already started.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'No puedes unirte a un torneo que ya ha comenzado.'}, status=status.HTTP_400_BAD_REQUEST)
 
         if tournament.players.filter(pk=user.pk).exists():
-            return Response({'detail': 'You are already registered in this tournament.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'Ya estás registrado en este torneo.'}, status=status.HTTP_400_BAD_REQUEST)
         print(f"players_amount: {tournament.players_amount}, current players: {tournament.players.count()}")
 
 
         if tournament.players_amount <= tournament.players.count():
-            return Response({'detail': 'The tournament is full.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'El torneo está lleno.'}, status=status.HTTP_400_BAD_REQUEST)
 
         tournament.players.add(user)
         players_data = UserSerializer(tournament.players.all(), many=True).data #devuelvo la lista de inscriptos hasta el momento
 
         return Response({
-            'detail': 'Successfully registered.',
+            'detail': 'Registro exitoso.',
             'players': players_data
         }, status=status.HTTP_200_OK)
 
@@ -67,15 +67,15 @@ class TournamentViewSet(viewsets.ModelViewSet):
         tournament = self.get_object()
 
         if tournament.status != 'PENDING':
-            return Response({'detail': 'You cannot leave a tournament that has already started.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'No puedes abandonar un torneo que ya ha comenzado.'}, status=status.HTTP_400_BAD_REQUEST)
 
         if not tournament.players.filter(pk=user.pk).exists():
-            return Response({'detail': 'You are not registered in this tournament.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'No estás registrado en este torneo.'}, status=status.HTTP_400_BAD_REQUEST)
 
         tournament.players.remove(user)
 
         return Response({
-            'detail': 'Successfully unregistered.',
+            'detail': 'Desregistro exitoso.',
         }, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['get'])
@@ -93,10 +93,10 @@ class TournamentViewSet(viewsets.ModelViewSet):
         user = request.user
 
         if user != tournament.creator:
-            return Response({'detail': 'No permission.'}, status=status.HTTP_403_FORBIDDEN)
+            return Response({'detail': 'Sin permisos.'}, status=status.HTTP_403_FORBIDDEN)
         
         if tournament.status != 'PENDING':
-            return Response({'detail': 'Tournament already started or finished.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'El torneo ya ha comenzado o ha finalizado.'}, status=status.HTTP_400_BAD_REQUEST)
 
         players = list(tournament.players.all())
         games_created = []
@@ -117,7 +117,7 @@ class TournamentViewSet(viewsets.ModelViewSet):
         tournament.save()
 
         return Response({
-            'detail': f'Tournament started with {len(games_created)} games created.',
+            'detail': f'Torneo iniciado con {len(games_created)} partidas creadas.',
             'games': games_created,
         }, status=status.HTTP_201_CREATED)
 

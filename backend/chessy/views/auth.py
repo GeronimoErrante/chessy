@@ -38,7 +38,7 @@ class LoginView(APIView):
                     'access': str(refresh.access_token),
                 })
             return Response(
-                {'error': 'Invalid credentials'}, 
+                {'error': 'Credenciales inválidas'}, 
                 status=status.HTTP_401_UNAUTHORIZED
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
