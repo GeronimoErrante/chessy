@@ -100,7 +100,7 @@ export default function ChessTournaments() {
 
   return (
     <Layout>
-      <div className="space-y-4">
+      <div className="space-y-4 mb-6">
         {error && <Alert message={errorMessage} type="error" onClose={clearMessages} />}
         {success && <Alert message={successMessage} type="success" onClose={clearMessages} />}
       </div>

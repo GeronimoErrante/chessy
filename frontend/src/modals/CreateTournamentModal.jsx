@@ -109,17 +109,22 @@ const CreateTournamentModal = ({ isOpen, onClose, form, setForm, onCreate, modes
             rows={3}
           />
 
-          <input
-            type="number"
-            name="players_amount"
-            placeholder="CANTIDAD DE JUGADORES"
-            value={form.players_amount}
-            onChange={handleChange}
-            className="w-full p-3 bg-[#222] text-white border-none rounded-none placeholder-white uppercase text-center"
-            min={2}
-            max={100}
-            step={2}
-          />
+          <div className="grid grid-cols-2 gap-0">
+            <div className="bg-black p-3 flex items-center justify-center uppercase font-medium text-white">
+              CANTIDAD DE JUGADORES
+            </div>
+            <input
+              type="number"
+              name="players_amount"
+              placeholder="CANTIDAD DE JUGADORES"
+              value={form.players_amount}
+              onChange={handleChange}
+              className="w-full p-3 bg-[#222] text-white border-none rounded-none placeholder-white uppercase text-center"
+              min={2}
+              max={100}
+              step={2}
+            />
+          </div>
 
           <div className="grid grid-cols-2 gap-0">
             <div className="bg-black p-3 flex items-center justify-center uppercase font-medium text-white">
