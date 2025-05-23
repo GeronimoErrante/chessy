@@ -4,7 +4,6 @@ WORKDIR /app_frontend
 
 # Install dependencies
 COPY package*.json ./
-RUN npm install
 
 # Copy project
 COPY . .
