@@ -1,4 +1,5 @@
 import axios from "axios";
+import { checkAuth } from "../services/authService";
 
 const BASE_URL = "http://localhost:8000";
 
@@ -32,7 +33,7 @@ export async function getTournamentsByFilters({ status, mode }) {
 }
 
 export async function createTournament(data, token) {
-  console.log("Creating tournament with data:", data);
+  checkAuth(token);
   const response = await axios.post(
     `${BASE_URL}/tournaments/`,
     data,
@@ -47,6 +48,7 @@ export async function createTournament(data, token) {
 }
 
 export async function joinTournament(tournamentId, token) {
+  checkAuth(token);
   const response = await axios.post(
     `${BASE_URL}/tournaments/${tournamentId}/join/`,
     {},
@@ -61,6 +63,7 @@ export async function joinTournament(tournamentId, token) {
 }
 
 export async function leaveTournament(tournamentId, token) {
+  checkAuth(token);
   const response = await axios.post(
     `${BASE_URL}/tournaments/${tournamentId}/leave/`,
     {},
@@ -75,6 +78,7 @@ export async function leaveTournament(tournamentId, token) {
 }
 
 export async function startTournament(tournamentId, token) {
+  checkAuth(token);
   const response = await axios.post(
     `${BASE_URL}/tournaments/${tournamentId}/start/`,
     {},
