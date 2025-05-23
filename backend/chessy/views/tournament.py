@@ -10,8 +10,10 @@ from ..serializers.tournament import (
     TournamentSerializer,
     TournamentDetailSerializer,
     TournamentCreateSerializer,
-    TournamentStatusUpdateSerializer,
 )
+
+from ..serializers.game import GameCreateSerializer
+
 
 class TournamentViewSet(viewsets.ModelViewSet):
     queryset = Tournament.objects.all()
@@ -24,8 +26,6 @@ class TournamentViewSet(viewsets.ModelViewSet):
             return TournamentDetailSerializer
         elif self.action == 'create':
             return TournamentCreateSerializer
-        elif self.request.method == 'PATCH' and 'status' in self.request.data:
-            return TournamentStatusUpdateSerializer
         return TournamentSerializer
 
     def perform_create(self, serializer):
@@ -47,6 +47,11 @@ class TournamentViewSet(viewsets.ModelViewSet):
 
         if tournament.players.filter(pk=user.pk).exists():
             return Response({'detail': 'You are already registered in this tournament.'}, status=status.HTTP_400_BAD_REQUEST)
+        print(f"players_amount: {tournament.players_amount}, current players: {tournament.players.count()}")
+
+
+        if tournament.players_amount <= tournament.players.count():
+            return Response({'detail': 'The tournament is full.'}, status=status.HTTP_400_BAD_REQUEST)
 
         tournament.players.add(user)
         players_data = UserSerializer(tournament.players.all(), many=True).data #devuelvo la lista de inscriptos hasta el momento
@@ -54,6 +59,23 @@ class TournamentViewSet(viewsets.ModelViewSet):
         return Response({
             'detail': 'Successfully registered.',
             'players': players_data
+        }, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    def leave(self, request, pk=None):
+        user = request.user
+        tournament = self.get_object()
+
+        if tournament.status != 'PENDING':
+            return Response({'detail': 'You cannot leave a tournament that has already started.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not tournament.players.filter(pk=user.pk).exists():
+            return Response({'detail': 'You are not registered in this tournament.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        tournament.players.remove(user)
+
+        return Response({
+            'detail': 'Successfully unregistered.',
         }, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['get'])
@@ -64,4 +86,39 @@ class TournamentViewSet(viewsets.ModelViewSet):
             "modes": mode_choices,
             "statuses": status_choices
         })
+
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    def start(self, request, pk=None):
+        tournament = self.get_object()
+        user = request.user
+
+        if user != tournament.creator:
+            return Response({'detail': 'No permission.'}, status=status.HTTP_403_FORBIDDEN)
+        
+        if tournament.status != 'PENDING':
+            return Response({'detail': 'Tournament already started or finished.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        players = list(tournament.players.all())
+        games_created = []
+
+        for i in range(0, len(players) - 1, 2):
+            data = {
+                'player1': players[i].id,
+                'player2': players[i+1].id,
+            }
+            serializer = GameCreateSerializer(data=data, context={'tournament': tournament})
+            if serializer.is_valid():
+                serializer.save()
+                games_created.append(serializer.data)
+            else:
+                pass
+        
+        tournament.status = 'IN_PROGRESS'
+        tournament.save()
+
+        return Response({
+            'detail': f'Tournament started with {len(games_created)} games created.',
+            'games': games_created,
+        }, status=status.HTTP_201_CREATED)
+
 

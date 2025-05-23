@@ -9,7 +9,7 @@ from datetime import datetime
 class TournamentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tournament
-        fields = ['id', 'name', 'start_date', 'start_time', 'prize', 'mode']
+        fields = ['id', 'name', 'start_date', 'start_time', 'prize', 'mode', 'players_amount', 'description']
 
     def validate(self, attrs):
         start_date = attrs.get('start_date')
@@ -41,28 +41,13 @@ class TournamentDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tournament
-        fields = ['id', 'name', 'start_date', 'start_time', 'prize', 'mode', 'status', 'players', 'creator', 'games']
+        fields = ['id', 'name', 'start_date', 'start_time', 'prize', 'mode', 'status', 'players', 'creator', 'games', 'players_amount', 'description']
 
     def get_creator(self, obj):
         return obj.creator.username if obj.creator else None
     
     def get_games(self, obj):
         return [str(game) for game in obj.games.filter(status='IN_GAME')]
-
-class TournamentStatusUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tournament
-        fields = ['status']
-
-    def validate(self, attrs):
-        request_user = self.context['request'].user
-        if self.instance.creator != request_user:
-            raise serializers.ValidationError("Only the creator can update the tournament status.")
-
-        status = attrs.get('status', self.instance.status)
-        validated_status = self.validate_status(status)
-        attrs['status'] = validated_status
-        return attrs
 
     def validate_status(self, value):
         instance = self.instance

@@ -38,6 +38,8 @@ class Tournament(models.Model):
     prize = models.IntegerField()
     mode = models.CharField(max_length=10, choices=MODE_CHOICES)
     status = models.CharField(max_length=11, choices=STATUS_CHOICES, default='PENDING')
+    players_amount = models.IntegerField(default=0)
+    description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -49,7 +51,7 @@ class Tournament(models.Model):
 
 class Game(models.Model):
     STATUS_CHOICES = [
-        ('PENDING', 'Pendinente'),
+        ('PENDING', 'Pendiente'),
         ('IN_GAME', 'En juego'),
         ('FINISHED', 'Finalizado'),
     ]
@@ -62,7 +64,7 @@ class Game(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.player1.username} vs {self.player2.username} ({self.status})"
+        return f"{self.player1.username} vs {self.player2.username}"
     
     class Meta:
         ordering = ['-created_at']
