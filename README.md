@@ -26,6 +26,9 @@ Repositorio oficial: [https://github.com/GeronimoErrante/chessy](https://github.
 git clone https://github.com/GeronimoErrante/chessy.git
 cd chessy
 docker-compose up --build
+o
+docker compose up --build (dependiendo la versión de Docker)
+
 ```
 
 ---
