@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom"; 
 import { registerUser } from "../services/authService"; 
+import Alert from "../components/Alert";
 
 export default function Register() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -31,7 +33,8 @@ export default function Register() {
     e.preventDefault();
 
     if (!acceptTerms) {
-      setError("Debés aceptar los términos y condiciones.");
+      setError(true);
+      setErrorMessage("Debés aceptar los términos y condiciones.");
       return;
     }
 
@@ -40,13 +43,25 @@ export default function Register() {
       navigate("/login");
     } catch (err) {
       console.error("Error en el registro:", err);
-      setError(err?.error || "Ocurrió un error inesperado.");
+        console.error(err.response.data.detail[0]);
+      setError(true);
+      setErrorMessage(err.response.data.detail[0] || "Error al registrar.");
     }
   };
 
   const handleClose = () => {
     navigate("/");
   };
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(false);
+        setErrorMessage("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   return (
     <div className="min-h-screen w-full bg-black flex items-center justify-center p-4">
@@ -61,9 +76,9 @@ export default function Register() {
             onClick={handleClose}
             className="bg-red-500 w-8 h-8 flex items-center justify-center rounded hover:bg-red-600 focus:outline-none"
             aria-label="Cerrar">
-            <X className="w-6 h-6 text-white" />
-            
-            </button>
+            <X className="w-6 h-6 text-black" />
+            X
+          </button> 
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -96,11 +111,11 @@ export default function Register() {
                 className={`ml-4 w-8 h-8 flex items-center justify-center ${acceptTerms ? "bg-red-500" : "bg-gray-300"}`}
                 onClick={() => setAcceptTerms(!acceptTerms)}
               >
-                {acceptTerms && <X className="text-white w-5 h-5" />}
+                {acceptTerms && <X className="text-white w-5 h-5"/> }
               </button>
             </div>
 
-            {error && <p className="text-red-700 text-center font-semibold">{error}</p>}
+            {error && <p className="text-red-700 text-center font-semibold">{errorMessage}</p>}
 
             <div className="grid grid-cols-2 gap-4 mt-6">
               <button
@@ -118,6 +133,7 @@ export default function Register() {
             </div>
           </div>
         </form>
+        {error && <Alert message={errorMessage} />}
 
         <div className="mt-6 text-center text-black">
           <p className="mb-2">
@@ -136,7 +152,6 @@ export default function Register() {
   );
 }
 
-// Componente auxiliar para inputs
 function InputField({ label, name, value, onChange, type = "text" }) {
   return (
     <div>
@@ -153,7 +168,6 @@ function InputField({ label, name, value, onChange, type = "text" }) {
   );
 }
 
-// Componente auxiliar para passwords
 function PasswordInput({ label, name, value, onChange, show, toggle }) {
   return (
     <div>
@@ -172,7 +186,7 @@ function PasswordInput({ label, name, value, onChange, show, toggle }) {
           className="absolute right-2 top-1/2 transform -translate-y-1/2"
           onClick={toggle}
         >
-        {show ? <Eye className="w-5 h-5 text-[#f0d989]" /> : <EyeOff className="w-5 h-5 text-[#f0d989]" />}
+          {show ? <Eye className="w-5 h-5 text-[#f0d989]" /> : <EyeOff className="w-5 h-5 text-[#f0d989]" />}
         </button>
       </div>
     </div>

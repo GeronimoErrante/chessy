@@ -5,7 +5,7 @@ import { formatTournamentDate } from "../utils/formatDate";
 import Layout from "../components/Layout";
 import { useNavigate } from "react-router-dom";
 import CreateTournamentModal from "../modals/CreateTournamentModal";
-
+import Alert from "../components/Alert";
 
 export default function ChessTournaments() {
   const navigate = useNavigate();
@@ -21,6 +21,8 @@ export default function ChessTournaments() {
     start_time: "",
     prize: "",
     mode: "",
+    description: "",
+    players_amount: 2,
   });
 
   useEffect(() => {
@@ -48,13 +50,14 @@ export default function ChessTournaments() {
 
   const handleCreate = async (formData) => {
     try {
+    console.log("Form data:", formData);
     const token = localStorage.getItem("accessToken");
     await createTournament(formData, token);
     setShowModal(false);
     loadTournaments(selectedStatus, selectedMode);
   } catch (err) {
+    <Alert message={err.message} /> 
     console.error("Error creando torneo:", err);
-    alert("Error al crear el torneo.");
   }
 };
 
