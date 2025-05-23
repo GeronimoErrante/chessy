@@ -20,15 +20,21 @@ export default function LandingPage() {
           <div className="w-full space-y-4">
             <Link
               to="/login"
-              className="block w-full bg-black text-white py-3 text-center text-base font-bold tracking-wider hover:bg-gray-900 transition-colors"
+              className="block w-full bg-black text-[#f0d989] py-3 text-center text-base font-bold tracking-wider hover:bg-gray-900 transition-colors"
             >
-              LOGIN
+              INICIAR SESIÓN
             </Link>
             <Link
               to="/register"
-              className="block w-full bg-black text-white py-3 text-center text-base font-bold tracking-wider hover:bg-gray-900 transition-colors"
+              className="block w-full bg-black text-[#f0d989] py-3 text-center text-base font-bold tracking-wider hover:bg-gray-900 transition-colors"
             >
-              REGISTER
+              REGISTRARSE
+            </Link>
+            <Link
+              to="/tournaments"
+              className="block w-full bg-black text-[#f0d989] py-3 text-center text-base font-bold tracking-wider hover:bg-gray-900 transition-colors"
+            >
+              VER TORNEOS
             </Link>
             
             <button className="w-full bg-black text-[#f0d989] py-2 text-xs font-bold tracking-wider hover:bg-gray-900 transition-colors">
@@ -84,15 +90,21 @@ export default function LandingPage() {
               <div className="w-full max-w-md space-y-5">
                 <Link
                   to="/login"
-                  className="block w-full bg-black text-white py-4 text-center text-lg font-bold tracking-wider hover:bg-gray-900 transition-colors"
+                  className="block w-full bg-black text-[#f0d989] py-4 text-center text-lg font-bold tracking-wider hover:bg-gray-900 transition-colors"
                 >
-                  LOGIN
+                  INICIAR SESIÓN
                 </Link>
                 <Link
                   to="/register"
-                  className="block w-full bg-black text-white py-4 text-center text-lg font-bold tracking-wider hover:bg-gray-900 transition-colors"
+                  className="block w-full bg-black text-[#f0d989] py-4 text-center text-lg font-bold tracking-wider hover:bg-gray-900 transition-colors"
                 >
-                  REGISTER
+                  REGISTRARSE
+                </Link>
+                <Link
+                  to="/tournaments"
+                  className="block w-full bg-black text-[#f0d989] py-4 text-center text-lg font-bold tracking-wider hover:bg-gray-900 transition-colors"
+                >
+                  VER TORNEOS
                 </Link>
                 
                 <div className="flex w-full gap-2 mt-4">
