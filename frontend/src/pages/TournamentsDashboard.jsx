@@ -60,24 +60,24 @@ export default function ChessTournaments() {
 
   return (
     <Layout>
-    <div className="flex justify-center mb-6">
+      <div className="flex justify-center mb-4 sm:mb-6 px-2 sm:px-0">
         <button
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded"
-          onClick={() => setShowModal(true)}
-        >
+          className="bg-yellow-200 text-black font-semibold py-2 px-4 sm:px-6 text-sm sm:text-base rounded w-full sm:w-auto"
+          onClick={() => setShowModal(true)}>
           Crear Torneo
         </button>
       </div>
-      <div className="mb-4 flex gap-4 items-center">
-        <div>
-          <label className="block mb-1 font-semibold text-lg" htmlFor="status-select">
+      
+      <div className="mb-4 flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center px-2 sm:px-0">
+        <div className="w-full sm:w-auto">
+          <label className="block mb-1 font-semibold text-base sm:text-lg" htmlFor="status-select">
             Estado
           </label>
           <select
             id="status-select"
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="bg-black text-white p-2 rounded border border-gray-700"
+            className="bg-black text-white p-2 rounded border border-gray-700 w-full"
           >
             <option value="">Todos</option>
             {statuses.map(({ value, label }) => (
@@ -88,15 +88,15 @@ export default function ChessTournaments() {
           </select>
         </div>
 
-        <div>
-          <label className="block mb-1 font-semibold text-lg" htmlFor="mode-select">
+        <div className="w-full sm:w-auto">
+          <label className="block mb-1 font-semibold text-base sm:text-lg" htmlFor="mode-select">
             Modo
           </label>
           <select
             id="mode-select"
             value={selectedMode}
             onChange={(e) => setSelectedMode(e.target.value)}
-            className="bg-black text-white p-2 rounded border border-gray-700"
+            className="bg-black text-white p-2 rounded border border-gray-700 w-full"
           >
             <option value="">Todos</option>
             {modes.map(({ value, label }) => (
@@ -108,14 +108,14 @@ export default function ChessTournaments() {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
+      <div className="overflow-x-auto px-2 sm:px-0">
+        <table className="w-full border-collapse min-w-full">
           <thead>
-            <tr className="text-left text-xl md:text-2xl font-bold">
-              <th className="py-4 px-2 md:px-4">TORNEO</th>
-              <th className="py-4 px-2 md:px-4">FECHA DE INICIO</th>
-              <th className="py-4 px-2 md:px-4">MODO</th>
-              <th className="py-4 px-2 md:px-4">PREMIO</th>
+            <tr className="text-left text-lg sm:text-xl md:text-2xl font-bold">
+              <th className="py-3 sm:py-4 px-2 sm:px-4">TORNEO</th>
+              <th className="py-3 sm:py-4 px-2 sm:px-4">FECHA DE INICIO</th>
+              <th className="py-3 sm:py-4 px-2 sm:px-4">MODO</th>
+              <th className="py-3 sm:py-4 px-2 sm:px-4">PREMIO</th>
             </tr>
           </thead>
           <tbody>
@@ -125,19 +125,19 @@ export default function ChessTournaments() {
                 className="border-t border-gray-800 hover:bg-gray-900 transition-colors"
               >
                 <td
-                  className="py-4 px-2 md:px-4 cursor-pointer hover:underline"
+                  className="py-3 sm:py-4 px-2 sm:px-4 cursor-pointer hover:underline text-sm sm:text-base"
                   onClick={() => navigate(`/tournaments/${tournament.id}`)}
                 >
                   {tournament.name} ({mapTournamentStatus(tournament.status)})
                 </td>
 
-                <td className="py-4 px-2 md:px-4">
+                <td className="py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base">
                   {formatTournamentDate(tournament.start_date, tournament.start_time)}
                 </td>
-                <td className="py-4 px-2 md:px-4">{getModeIcon(tournament.mode)}</td>
-                <td className="py-4 px-2 md:px-4">
+                <td className="py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base">{getModeIcon(tournament.mode)}</td>
+                <td className="py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base">
                   {tournament.prize === "NONE" ? (
-                    <div className="bg-white text-black px-2 py-1 inline-block">NONE</div>
+                    <div className="bg-white text-black px-2 py-1 inline-block text-xs sm:text-sm">NONE</div>
                   ) : (
                     tournament.prize
                   )}
