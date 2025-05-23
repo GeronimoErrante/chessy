@@ -28,13 +28,15 @@ cd chessy
 
 ```
 ### 2. Contruir la imagen de los servicios e instalar dependencias
+```
 docker compose build
 docker compose run --rm frontend npm i
 ```
-```
 ### 3. Levantar la aplicación completa
+```
 docker compose up
 ```
+
 ---
 
 ## 🔐 Archivos `.env` necesarios
