@@ -1,7 +1,10 @@
 import axios from "axios";
 import { checkAuth } from "../services/authService";
 
-const BASE_URL = "http://localhost:8000";
+// const BASE_URL = "http://localhost:8000";
+
+const BASE_URL = process.env.REACT_APP_API_URL;
+
 
 export async function getTournaments(query = "") {
   const response = await axios.get(`${BASE_URL}/tournaments/${query ? "?" + query : ""}`);
