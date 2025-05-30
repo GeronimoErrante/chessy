@@ -87,10 +87,10 @@ WSGI_APPLICATION = 'chess_tournament.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'chess_tournament',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db',
+        'NAME': 'chessy_bdd',  
+        'USER': 'chessy_bdd_user',
+        'PASSWORD': 'hGikiI2dAOAtH6wRuGUJ0l9u4x4IpeBZ',
+        'HOST': 'dpg-d0obfnje5dus73baj5v0-a.oregon-postgres.render.com',
         'PORT': '5432',
     }
 }
