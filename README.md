@@ -46,14 +46,14 @@ Asegurate de crear los siguientes archivos `.env` antes de levantar los servicio
 ### 📁 `frontend/.env`
 
 ```env
-REACT_APP_API_URL=http://localhost:8000
-REACT_APP_API_TIMEOUT=5000
+VITE_APP_API_URL=http://localhost:8000
+VITE_APP_API_TIMEOUT=5000
 
-REACT_APP_ENV=development
-REACT_APP_ENABLE_AUTH=true
-REACT_APP_ENABLE_TOURNAMENTS=true
+VITE_APP_ENV=development
+VITE_APP_ENABLE_AUTH=true
+VITE_APP_ENABLE_TOURNAMENTS=true
 
-REACT_APP_WS_URL=ws://localhost:8000/ws/
+VITE_APP_WS_URL=ws://localhost:8000/ws/
 ```
 
 ### 📁 `backend/.env`
