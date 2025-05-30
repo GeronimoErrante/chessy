@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = `${process.env.REACT_APP_API_URL}/auth/`;
+const API_URL = import.meta.env.VITE_API_URL;
 
 const errorTranslations = {
   "A user with that username already exists.": "Ya existe un usuario con ese nombre.",
@@ -24,7 +24,7 @@ const translateError = (message) => {
 
 export const registerUser = async (userData) => {
   try {
-    const response = await axios.post(`${BASE_URL}register/`, userData);
+    const response = await axios.post(`${API_URL}/auth/register`, userData);
     return response.data;
   } catch (error) {
     const errorData = error.response?.data;
@@ -47,7 +47,7 @@ export const registerUser = async (userData) => {
 
 export const loginUser = async (credentials) => {
   try {
-    const response = await axios.post(`${BASE_URL}login/`, credentials);
+    const response = await axios.post(`${API_URL}/auth/login`, credentials);
     return response.data;
   } catch (error) {
     const errorData = error.response?.data;
@@ -61,7 +61,7 @@ export const loginUser = async (credentials) => {
 
 export const getCurrentUser = async (token) => {
   try {
-    const response = await axios.get(`${BASE_URL}user/`, {
+    const response = await axios.get(`${API_URL}/auth/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
