@@ -25,7 +25,12 @@ SECRET_KEY = 'django-insecure-2sej#@edlv_z&b+0xvhs1podc!_8w6v0b-^i(v-gb&3z@y8#m+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'chessy-backend-sjx8.onrender.com',
+    'https://chessy-dun.vercel.app/',
+]
 
 
 # Application definition
@@ -179,6 +184,8 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:3000",
+    'https://chessy-dun.vercel.app/',
+    'https://chessy-backend-sjx8.onrender.com',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
