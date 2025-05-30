@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_API_URL + "/auth/";
-
+const BASE_URL = `${process.env.REACT_APP_API_URL}/auth/`;
 
 const errorTranslations = {
   "A user with that username already exists.": "Ya existe un usuario con ese nombre.",
