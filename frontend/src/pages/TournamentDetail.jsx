@@ -124,9 +124,9 @@ export default function TournamentDetails() {
         {error && <Alert message={errorMessage} type="error" onClose={clearMessages} />}
         {success && <Alert message={successMessage} type="success" onClose={clearMessages} />}
       </div>
-      <main className="flex flex-col min-h-screen w-full bg-black text-yellow-200 px-8 py-4">
-        <h1 className="text-2xl font-bold text-center">{tournament.name}</h1>
-        <p className="text-lg text-center mt-1">🏆 Premio: {tournament.prize} pts</p>
+      <main className="flex flex-col min-h-screen w-full bg-black text-yellow-200 px-4 sm:px-8 py-4">
+        <h1 className="text-xl sm:text-2xl font-bold text-center">{tournament.name}</h1>
+        <p className="text-base sm:text-lg text-center mt-1">🏆 Premio: {tournament.prize} pts</p>
         <Countdown
           startDate={tournament.start_date}
           startTime={tournament.start_time}
@@ -160,13 +160,13 @@ export default function TournamentDetails() {
 
         {showConfirmLeave && (
           <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-            <div className="bg-black p-6 rounded-lg max-w-md mx-4 border border-gold">
-              <h3 className="text-lg font-bold mb-4 text-gold">Confirmar salida</h3>
+            <div className="bg-black p-4 sm:p-6 rounded-lg max-w-md mx-4 border border-gold">
+              <h3 className="text-base sm:text-lg font-bold mb-4 text-gold">Confirmar salida</h3>
               <p className="text-white mb-6">¿Estás seguro que quieres abandonar el torneo?</p>
               <div className="flex justify-end space-x-4">
                 <button
                   onClick={() => setShowConfirmLeave(false)}
-                  className="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 border border-gray-600"
+                  className="px-3 sm:px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 border border-gray-600"
                 >
                   Cancelar
                 </button>
@@ -175,7 +175,7 @@ export default function TournamentDetails() {
                     setShowConfirmLeave(false);
                     handleLeave();
                   }}
-                  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 border border-red-400"
+                  className="px-3 sm:px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 border border-red-400"
                 >
                   Confirmar
                 </button>
@@ -184,14 +184,14 @@ export default function TournamentDetails() {
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-6 flex-grow mb-4 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 flex-grow mb-4 mt-6">
           <div>
-            <div className="grid grid-cols-3 gap-2 font-bold border-b pb-2 border-yellow-200">
+            <div className="grid grid-cols-2 gap-2 font-bold border-b pb-2 border-yellow-200">
               <span>PARTICIPANTES</span>
               <span>PUNTOS</span>
             </div>
             {tournament.players.map((playerItem, index) => (
-              <div key={index} className="grid grid-cols-3 gap-2 py-2">
+              <div key={index} className="grid grid-cols-2 gap-2 py-2">
                 <span>
                   {playerItem.username}{" "}
                   {playerItem.username === tournament.creator && (
@@ -204,28 +204,26 @@ export default function TournamentDetails() {
               </div>
             ))}
             {Array.from({ length: Math.max(0, 5 - tournament.players.length) }).map((_, i) => (
-              <div key={i} className="grid grid-cols-3 gap-2 py-2 opacity-20">
-                <span>-</span><span>-</span><span>-</span>
+              <div key={i} className="grid grid-cols-2 gap-2 py-2 opacity-20">
+                <span>-</span><span>-</span>
               </div>
             ))}
           </div>
 
           <div>
-          <div className="grid grid-cols-3 font-bold border-b pb-2 border-yellow-200">
-            <span>ENCUENTROS EN PROGRESO</span><span></span><span></span>
-          </div>
-            {console.log("Tournament:", tournament)}
+            <div className="grid grid-cols-1 font-bold border-b pb-2 border-yellow-200">
+              <span>ENCUENTROS EN PROGRESO</span>
+            </div>
             {tournament.games && tournament.games.length > 0 ? (
               tournament.games.map((game, index) => (
-                <div key={index} className="grid grid-cols-3 gap-2 py-2">
+                <div key={index} className="grid grid-cols-1 gap-2 py-2">
                   <span>{game}</span>
                 </div>
               ))
             ) : (
               <p className="mt-2 text-sm text-yellow-400">No hay partidas en progreso</p>
             )}
-
-        </div>
+          </div>
         </div>
       </main>
     </Layout>
