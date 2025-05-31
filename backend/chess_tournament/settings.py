@@ -184,7 +184,7 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:3000",
-    'https://chessy-dun.vercel.app/',
+    'https://chessy-dun.vercel.app',
     'https://chessy-backend-sjx8.onrender.com',
 ]
 
