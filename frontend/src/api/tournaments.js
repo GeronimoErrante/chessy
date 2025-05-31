@@ -6,7 +6,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 
 export async function getTournaments(query = "") {
-  const response = await axios.get(`${BASE_URL}/tournaments/${query ? "?" + query : ""}`);
+  const response = await axios.get(`${API_URL}/tournaments/${query ? "?" + query : ""}`);
   return response.data;
 }
 
