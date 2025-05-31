@@ -105,6 +105,6 @@ export async function getTournamentsByFilters({ status, mode }) {
   if (status) params.append("status", status);
   if (mode) params.append("mode", mode);
 
-  const res = await fetch(`${API_URL}/tournaments/?${params}/`);
+  const res = await fetch(`${API_URL}/tournaments/?${params}`);
   return res.json();
 }
