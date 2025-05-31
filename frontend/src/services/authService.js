@@ -24,6 +24,7 @@ const translateError = (message) => {
 
 export const registerUser = async (userData) => {
   try {
+    console.log(API_URL);
     const response = await axios.post(`${API_URL}/auth/register/`, userData);
     return response.data;
   } catch (error) {
