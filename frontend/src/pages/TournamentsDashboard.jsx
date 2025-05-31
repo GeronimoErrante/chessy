@@ -114,7 +114,7 @@ export default function ChessTournaments() {
   return (
     <Layout>
       {isLoading && <Loader />}
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-4 py-6 pb-20">
         <div className="space-y-4 mb-6">
           {error && <Alert message={errorMessage} type="error" onClose={clearMessages} />}
           {success && <Alert message={successMessage} type="success" onClose={clearMessages} />}
@@ -168,7 +168,7 @@ export default function ChessTournaments() {
           </div>
         </div>
 
-        <div className="overflow-x-auto rounded-lg border border-gray-800">
+        <div className="overflow-x-auto rounded-lg border border-gray-800 mb-20">
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-900">
