@@ -7,7 +7,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export const getTournaments = async () => {
   try {
-    const response = await axios.get(`${API_URL}/tournaments`);
+    const response = await axios.get(`${API_URL}/tournaments/`);
     return response.data;
   } catch (error) {
     throw error;
@@ -16,7 +16,7 @@ export const getTournaments = async () => {
 
 export const getTournamentById = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/tournaments/${id}`);
+    const response = await axios.get(`${API_URL}/tournaments/${id}/`);
     return response.data;
   } catch (error) {
     throw error;
@@ -26,7 +26,7 @@ export const getTournamentById = async (id) => {
 export const createTournament = async (tournamentData, token) => {
   try {
     const response = await axios.post(
-      `${API_URL}/tournaments`,
+      `${API_URL}/tournaments/`,
       tournamentData,
       {
         headers: {
@@ -43,7 +43,7 @@ export const createTournament = async (tournamentData, token) => {
 export const joinTournament = async (tournamentId, token) => {
   try {
     const response = await axios.post(
-      `${API_URL}/tournaments/${tournamentId}/join`,
+      `${API_URL}/tournaments/${tournamentId}/join/`,
       {},
       {
         headers: {
@@ -60,7 +60,7 @@ export const joinTournament = async (tournamentId, token) => {
 export const leaveTournament = async (tournamentId, token) => {
   try {
     const response = await axios.post(
-      `${API_URL}/tournaments/${tournamentId}/leave`,
+      `${API_URL}/tournaments/${tournamentId}/leave/`,
       {},
       {
         headers: {
@@ -77,7 +77,7 @@ export const leaveTournament = async (tournamentId, token) => {
 export const startTournament = async (tournamentId, token) => {
   try {
     const response = await axios.post(
-      `${API_URL}/tournaments/${tournamentId}/start`,
+      `${API_URL}/tournaments/${tournamentId}/start/`,
       {},
       {
         headers: {
@@ -106,6 +106,6 @@ export async function getTournamentsByFilters({ status, mode }) {
   if (status) params.append("status", status);
   if (mode) params.append("mode", mode);
 
-  const res = await fetch(`${API_URL}/tournaments/?${params}`);
+  const res = await fetch(`${API_URL}/tournaments/?${params}/`);
   return res.json();
 }
