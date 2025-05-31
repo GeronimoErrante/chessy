@@ -4,14 +4,11 @@ import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const getTournaments = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/tournaments/`);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
+
+export async function getTournaments(query = "") {
+  const response = await axios.get(`${BASE_URL}/tournaments/${query ? "?" + query : ""}`);
+  return response.data;
+}
 
 export const getTournamentById = async (id) => {
   try {
@@ -105,6 +102,6 @@ export async function getTournamentsByFilters({ status, mode }) {
   if (status) params.append("status", status);
   if (mode) params.append("mode", mode);
 
-  const res = await fetch(`${API_URL}/tournaments/?${params.toString()}`);
+  const res = await fetch(`${BASE_URL}/tournaments/?${params}`);
   return res.json();
 }
