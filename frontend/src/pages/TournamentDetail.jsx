@@ -124,7 +124,7 @@ export default function TournamentDetails() {
         {error && <Alert message={errorMessage} type="error" onClose={clearMessages} />}
         {success && <Alert message={successMessage} type="success" onClose={clearMessages} />}
       </div>
-      <main className="flex flex-col min-h-screen w-full bg-black text-yellow-200 px-4 sm:px-8 py-4">
+      <main className="flex flex-col min-h-screen w-full bg-black text-yellow-200 px-4 sm:px-8 py-4 pb-20">
         <h1 className="text-xl sm:text-2xl font-bold text-center">{tournament.name}</h1>
         <p className="text-base sm:text-lg text-center mt-1">🏆 Premio: {tournament.prize} pts</p>
         <Countdown
@@ -184,7 +184,7 @@ export default function TournamentDetails() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 flex-grow mb-4 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 flex-grow mb-20 mt-6">
           <div>
             <div className="grid grid-cols-2 gap-2 font-bold border-b pb-2 border-yellow-200">
               <span>PARTICIPANTES</span>

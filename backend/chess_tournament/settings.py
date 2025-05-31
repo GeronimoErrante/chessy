@@ -186,6 +186,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     'https://chessy-dun.vercel.app',
     'https://chessy-backend-sjx8.onrender.com',
+    'https://chessy-9eo0ohk9a-geronimo-errantes-projects.vercel.app',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
