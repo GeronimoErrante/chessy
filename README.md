@@ -29,8 +29,3 @@ Repositorio oficial: [github.com/GeronimoErrante/chessy](https://github.com/Gero
 👉 **[Acceder a la app](https://chessy-dun.vercel.app/)**
 
 ---
-
-## ⚙️ Requisitos para correr localmente
-
-- [Docker](https://www.docker.com/)
-- [Docker Compose](https://docs.docker.com/compose/)
