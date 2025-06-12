@@ -34,13 +34,3 @@ Repositorio oficial: [github.com/GeronimoErrante/chessy](https://github.com/Gero
 
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
-
----
-
-## 🛠️ Instalación local en 3 pasos
-
-### 1. Clonar el repositorio
-
-```bash
-git clone https://github.com/GeronimoErrante/chessy.git
-cd chessy
