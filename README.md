@@ -9,7 +9,16 @@
 
 ---
 
-**Chessy** es una plataforma web intuitiva y moderna para **organizar torneos de ajedrez** en línea o presenciales. Fue diseñada para clubes, instituciones o cualquier amante del ajedrez que quiera gestionar partidas de manera eficiente y visual.
+**Chessy** es una plataforma web intuitiva y moderna para **organizar torneos de ajedrez**, tanto en línea como presenciales. Diseñada para clubes, instituciones educativas o cualquier amante del ajedrez, permite **gestionar partidas de forma eficiente, visual y totalmente automática**.
+
+🎯 Con Chessy podés:
+- 📝 **Inscribirte** en torneos existentes o **crear los tuyos** con facilidad.
+- 🧠 Elegir el **modo de juego** (standard, blitz...).
+- 👥 Definir la **cantidad de participantes**.
+- 🏆 Competir en torneos que se juegan **por puntos**, para que gane el más consistente.
+- ⏰ Una vez que llega la hora de inicio y se presiona **“Comenzar torneo”**, se generan automáticamente las **partidas entre los jugadores inscritos**, ¡y comienza la acción!
+
+✨ Todo pensado para que te enfoques en lo que más importa: **jugar y disfrutar del ajedrez.**
 
 🧩 El stack de Chessy:
 
