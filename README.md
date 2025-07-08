@@ -1,75 +1,40 @@
-# ♟ Chessy
+# ♟️ Chessy — Torneos de ajedrez online, al alcance de todos
 
-**Chessy** es una plataforma web para organizar y administrar torneos de ajedrez. El proyecto está compuesto por:
+[![Deploy](https://img.shields.io/badge/Vercel-Live--Demo-000?style=for-the-badge&logo=vercel)](https://chessy-dun.vercel.app/)
+[![Docker](https://img.shields.io/badge/docker-ready-blue?style=for-the-badge&logo=docker)](https://www.docker.com/)
+[![Made with Django](https://img.shields.io/badge/Django-Backend-success?style=for-the-badge&logo=django)](https://www.djangoproject.com/)
+[![React](https://img.shields.io/badge/React-Frontend-61dafb?style=for-the-badge&logo=react)](https://reactjs.org/)
 
-- ⚙️ Backend en **Django**
-- 💻 Frontend en **React** (con Vite)
+> **¡Probalo ahora! 👉 [chessy-dun.vercel.app](https://chessy-dun.vercel.app/)**
+
+---
+
+**Chessy** es una plataforma web intuitiva y moderna para **organizar torneos de ajedrez**, tanto en línea como presenciales. Diseñada para clubes, instituciones educativas o cualquier amante del ajedrez, permite **gestionar partidas de forma eficiente, visual y totalmente automática**.
+
+🎯 Con Chessy podés:
+- 📝 **Inscribirte** en torneos existentes o **crear los tuyos** con facilidad.
+- 🧠 Elegir el **modo de juego** (standard, blitz...).
+- 👥 Definir la **cantidad de participantes**.
+- 🏆 Competir en torneos que se juegan **por puntos**, para que gane el más consistente.
+- ⏰ Una vez que llega la hora de inicio y se presiona **“Comenzar torneo”**, se generan automáticamente las **partidas entre los jugadores inscritos**, ¡y comienza la acción!
+
+✨ Todo pensado para que te enfoques en lo que más importa: **jugar y disfrutar del ajedrez.**
+
+🧩 El stack de Chessy:
+
+- ⚙️ Backend robusto con **Django**
+- ⚡ Frontend veloz con **React** + **Vite**
 - 🐘 Base de datos **PostgreSQL**
-- 🐳 Orquestación mediante **Docker Compose**
+- 🐳 Contenedores con **Docker Compose**
 
-Repositorio oficial: [https://github.com/GeronimoErrante/chessy](https://github.com/GeronimoErrante/chessy)
-
----
-
-## 📦 Requisitos
-
-- [Docker](https://www.docker.com/)
-- [Docker Compose](https://docs.docker.com/compose/)
+Repositorio oficial: [github.com/GeronimoErrante/chessy](https://github.com/GeronimoErrante/chessy)
 
 ---
 
-## 🚀 Guía de instalación
+## 🧪 Probalo en línea
 
-### 1. Clonar el repositorio
+🎉 El proyecto está **desplegado y funcionando**:
 
-```bash
-git clone https://github.com/GeronimoErrante/chessy.git
-cd chessy
-
-```
-### 2. Contruir la imagen de los servicios e instalar dependencias
-```
-docker compose build
-docker compose run --rm frontend npm i
-```
-### 3. Levantar la aplicación completa
-```
-docker compose up
-```
+👉 **[Acceder a la app](https://chessy-dun.vercel.app/)**
 
 ---
-
-## 🔐 Archivos `.env` necesarios
-
-Asegurate de crear los siguientes archivos `.env` antes de levantar los servicios:
-
-### 📁 `frontend/.env`
-
-```env
-VITE_APP_API_URL=http://localhost:8000
-VITE_APP_API_TIMEOUT=5000
-
-VITE_APP_ENV=development
-VITE_APP_ENABLE_AUTH=true
-VITE_APP_ENABLE_TOURNAMENTS=true
-
-VITE_APP_WS_URL=ws://localhost:8000/ws/
-```
-
-### 📁 `backend/.env`
-
-```env
-DEBUG=1
-SECRET_KEY=django-insecure-your-secret-key-here-change-in-production
-ALLOWED_HOSTS=localhost,127.0.0.1
-
-DATABASE_URL=postgres://postgres:postgres@db:5432/chess_tournament
-
-CORS_ALLOWED_ORIGINS=http://localhost:3000
-CORS_ALLOW_CREDENTIALS=True
-
-JWT_SECRET_KEY=your-jwt-secret-key-here-change-in-production
-JWT_ACCESS_TOKEN_LIFETIME=5
-JWT_REFRESH_TOKEN_LIFETIME=1
-```
-
