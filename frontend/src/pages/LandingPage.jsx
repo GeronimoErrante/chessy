@@ -2,124 +2,53 @@ import { Link } from "react-router-dom";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen w-full bg-black flex items-center justify-center p-0 overflow-hidden">
-      <div className="md:hidden w-full min-h-screen bg-[#f0d989] flex flex-col items-center justify-center p-6">
-        <div className="w-full max-w-md flex flex-col items-center">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-6 tracking-tighter text-center text-black">
-            LOGO
+    <div className="min-h-screen w-full bg-gradient-to-br from-black via-gray-900 to-gray-800 flex items-center justify-center p-0 overflow-hidden relative">
+      {/* Fondo decorativo con gradiente y blur */}
+      <div className="absolute inset-0 z-0">
+        <div className="w-96 h-96 bg-yellow-300 opacity-10 rounded-full blur-3xl absolute -top-24 -left-24" />
+        <div className="w-96 h-96 bg-yellow-300 opacity-10 rounded-full blur-3xl absolute bottom-0 right-0" />
+      </div>
+      {/* Tarjeta central glassmorphism */}
+      <div className="relative z-10 w-full max-w-lg mx-auto px-4">
+        <div className="backdrop-blur-lg bg-black/60 rounded-3xl shadow-2xl border border-gray-700 p-8 flex flex-col items-center gap-8 mt-8 mb-8">
+          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-yellow-200 text-center drop-shadow-lg">
+              ♟️  
             <br />
-            EMPRESA
+            CHESSY
           </h1>
-
-          <p className="text-sm text-center mb-8 max-w-lg leading-relaxed text-black">
-            A new way to play the concentrated game of chess. A decentralized platform for everyone who wants to
-            earn money playing the most beloved game in the history. A decentralized platform for everyone who wants
-            to earn money playing chess. Integrated results on blockchain mode and much more in the future.
+          <p className="text-base sm:text-lg text-center text-gray-200 mb-2 max-w-md leading-relaxed">
+            Descubre una nueva experiencia de ajedrez online. Juega, aprende y compite en torneos con personas de todo el mundo. Mejora tus habilidades, haz nuevos amigos y disfruta del ajedrez como nunca antes. ¡Únete a la comunidad y vive la pasión por el ajedrez!
           </p>
-
-          <div className="w-full space-y-4">
+          <div className="flex flex-col gap-4 w-full">
             <Link
               to="/login"
-              className="block w-full bg-black text-[#f0d989] py-3 text-center text-base font-bold tracking-wider hover:bg-gray-900 transition-colors"
+              className="w-full flex items-center justify-center gap-2 bg-yellow-200 text-black py-3 font-bold tracking-wider rounded-xl shadow-md hover:bg-yellow-300 transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400"
             >
-              INICIAR SESIÓN
+              <span>INICIAR SESIÓN</span>
             </Link>
             <Link
               to="/register"
-              className="block w-full bg-black text-[#f0d989] py-3 text-center text-base font-bold tracking-wider hover:bg-gray-900 transition-colors"
+              className="w-full flex items-center justify-center gap-2 bg-gray-900 text-white py-3 rounded-xl font-bold text-lg shadow-md hover:bg-gray-800 transition-all border border-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             >
-              REGISTRARSE
+              <span>REGISTRARSE</span>
             </Link>
             <Link
               to="/tournaments"
-              className="block w-full bg-black text-[#f0d989] py-3 text-center text-base font-bold tracking-wider hover:bg-gray-900 transition-colors"
+              className="w-full flex items-center justify-center gap-2 bg-yellow-200 text-black py-3 font-bold tracking-wider rounded-xl shadow-md hover:bg-yellow-300 transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400"
             >
-              VER TORNEOS
+              <span>VER TORNEOS</span>
             </Link>
-            
-            <button className="w-full bg-black text-[#f0d989] py-2 text-xs font-bold tracking-wider hover:bg-gray-900 transition-colors">
+          </div>
+          <div className="flex flex-col sm:flex-row gap-2 w-full mt-4">
+            <button className="flex-1 bg-gray-800/80 text-yellow-200 py-2 rounded-lg font-semibold text-sm hover:bg-gray-700 transition-all border border-gray-700">
               TÉRMINOS Y CONDIC
             </button>
-            <button className="w-full bg-black text-[#f0d989] py-2 text-xs font-bold tracking-wider hover:bg-gray-900 transition-colors">
+            <button className="flex-1 bg-gray-800/80 text-yellow-200 py-2 rounded-lg font-semibold text-sm hover:bg-gray-700 transition-all border border-gray-700">
               MANUAL DE USUARIO
             </button>
-            <button className="w-full bg-black text-[#f0d989] py-2 text-xs font-bold tracking-wider hover:bg-gray-900 transition-colors">
+            <button className="flex-1 bg-gray-800/80 text-yellow-200 py-2 rounded-lg font-semibold text-sm hover:bg-gray-700 transition-all border border-gray-700">
               F.A.Qs
             </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="hidden md:flex relative w-full items-center justify-center">
-        <div
-          className="
-            w-[85vw] h-[85vw] lg:w-[800px] lg:h-[800px] xl:w-[900px] xl:h-[900px]
-            bg-[#f0d989]
-            shadow-2xl
-            transform rotate-45
-            flex items-center justify-center
-            overflow-hidden
-            relative
-          "
-        >
-          <div
-            className="
-            transform -rotate-45 
-            w-full h-full
-            flex flex-col items-center justify-center 
-            text-black 
-            px-8 lg:px-16
-          "
-          >
-            <div className="w-full max-w-xl flex flex-col items-center justify-center">
-              <h1 className="text-4xl lg:text-6xl font-bold mb-6 tracking-tighter text-center">
-                LOGO
-                <br />
-                EMPRESA
-              </h1>
-
-              <p className="text-sm md:text-base text-center mb-8 max-w-lg leading-relaxed">
-                A new way to play the concentrated game of chess. A decentralized platform for everyone who wants to
-                earn money playing the most beloved game in the history. A decentralized platform for everyone who wants
-                to earn money playing chess. Integrated results on blockchain mode and much more in the future. A new
-                way to play the concentrated game of chess. A decentralized platform for everyone who wants to earn
-                money playing the most beloved game in the history. Scholarships, tournaments, play-to-earn, ratings,
-                integrated results on blockchain mode and much more in the future stars in the future.
-              </p>
-
-              <div className="w-full max-w-md space-y-5">
-                <Link
-                  to="/login"
-                  className="block w-full bg-black text-[#f0d989] py-4 text-center text-lg font-bold tracking-wider hover:bg-gray-900 transition-colors"
-                >
-                  INICIAR SESIÓN
-                </Link>
-                <Link
-                  to="/register"
-                  className="block w-full bg-black text-[#f0d989] py-4 text-center text-lg font-bold tracking-wider hover:bg-gray-900 transition-colors"
-                >
-                  REGISTRARSE
-                </Link>
-                <Link
-                  to="/tournaments"
-                  className="block w-full bg-black text-[#f0d989] py-4 text-center text-lg font-bold tracking-wider hover:bg-gray-900 transition-colors"
-                >
-                  VER TORNEOS
-                </Link>
-                
-                <div className="flex w-full gap-2 mt-4">
-                  <button className="flex-1 bg-black text-[#f0d989] py-3 text-sm font-bold tracking-wider hover:bg-gray-900 transition-colors">
-                    TÉRMINOS Y CONDIC
-                  </button>
-                  <button className="flex-1 bg-black text-[#f0d989] py-3 text-sm font-bold tracking-wider hover:bg-gray-900 transition-colors">
-                    MANUAL DE USUARIO
-                  </button>
-                  <button className="flex-1 bg-black text-[#f0d989] py-3 text-sm font-bold tracking-wider hover:bg-gray-900 transition-colors">
-                    F.A.Qs
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
