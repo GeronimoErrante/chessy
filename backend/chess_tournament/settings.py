@@ -29,7 +29,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'chessy-backend-sjx8.onrender.com',
-    'https://chessy-dun.vercel.app/',
+    'chessy-dun.vercel.app',
 ]
 
 
